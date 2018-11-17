@@ -1,0 +1,5 @@
+.python
+venv/
+*.py[code]
+build/
+$py.class

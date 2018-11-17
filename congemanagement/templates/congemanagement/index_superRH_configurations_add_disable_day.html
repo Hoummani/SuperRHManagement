@@ -1,0 +1,35 @@
+{% extends 'congemanagement/base_index_superRH.html' %}
+{% load static %}
+
+{% block add_disable_day %}
+    <div class="" id="block_disable_day">
+        <h1>Ajouter un jour fériés</h1>
+        <form method="post" action="{% url 'add_disable_day' %}" id="form_add_disable_day">
+            {% csrf_token %}
+            <div class="form-group my-label">
+                <label class="control-label col-sm-2" for="{{ form.nom.id_for_label }}">Nom:</label>
+                <div class="col-sm-12">
+                    <!--<input type="text" class="form-control" data-validation="length alphanumeric" data-validation-length="min4" id="cin" placeholder="Entrer le CIN" required>-->
+                    {{ form.nom }}
+                    
+                </div>
+                <p class="col-sm-2" class="show-inf-error" id="cin-show-inf">{{ form.nom.errors }}</p>
+            </div>
+            <div class="form-group my-label">
+                <label class="control-label col-sm-2" for="{{ form.date_disable.id_for_label }}">Date de jour firie:</label>
+                <div class="col-sm-12">
+                    <!--<input type="text" class="form-control" data-validation="length alphanumeric" data-validation-length="min4" id="cin" placeholder="Entrer le CIN" required>-->
+                    {{ form.date_disable }}
+                    
+                </div>
+                <p class="col-sm-2" class="show-inf-error" id="cin-show-inf">{{ form.date_disable.errors }}</p>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-12">
+                    <button type="submit" class="btn btn-info">Ajouter</button>
+                    <a href="{% url 'configurate_conge' %}"><button type="button" id="" class="btn reteur-btn">Reteur</button></a>
+                </div>
+            </div>
+
+        </form>
+{% endblock add_disable_day %}

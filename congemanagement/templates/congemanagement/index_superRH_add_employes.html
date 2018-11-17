@@ -1,0 +1,98 @@
+{% extends 'congemanagement/base_index_superRH.html' %}
+{% load static %}
+
+{% block ajouter_employe %}
+    <div id="add_employe" class="">
+        <h1>Ajouter un employe</h1>
+        <form id="form-add-employe" class="form-horizontal container" method="post" action="{% url 'index_superRH_add_employes' %}">
+            {% csrf_token %}
+            <!--     success  save     -->
+            
+            <div class="form-group my-label">
+                <label class="control-label col-sm-2" for="{{ add_emp_form.cin.id_for_label }}">CIN:</label>
+                <div class="col-sm-12">
+                    <!--<input type="text" class="form-control" data-validation="length alphanumeric" data-validation-length="min4" id="cin" placeholder="Entrer le CIN" required>-->
+                    {{ add_emp_form.cin }}
+                    
+                </div>
+                <p class="col-sm-2" class="show-inf-error" id="cin-show-inf">{{ add_emp_form.cin.errors }}</p>
+            </div>
+            <div class="form-group my-label">
+                <label class="control-label col-sm-2" for="{{ add_emp_form.nom.id_for_label }}">Nom:</label>
+                <div class="col-sm-12">
+                    <!--<input type="text" class="form-control" data-validation="length alphanumeric" data-validation-length="min4" id="cin" placeholder="Entrer le CIN" required>-->
+                    {{ add_emp_form.nom }}
+                    
+                </div>
+                <p class="col-sm-2" class="show-inf-error" id="nom-show-inf">{{ add_emp_form.nom.errors }}</p>
+            </div>
+            <div class="form-group my-label">
+                <label class="control-label col-sm-2" for="{{ add_emp_form.prenom.id_for_label }}">Prenom:</label>
+                <div class="col-sm-12">
+                    <!--<input type="text" class="form-control" data-validation="length alphanumeric" data-validation-length="min4" id="cin" placeholder="Entrer le CIN" required>-->
+                    {{ add_emp_form.prenom }}
+                    
+                </div>
+                <p class="col-sm-2" class="show-inf-error" id="prenom-show-inf">{{ add_emp_form.prenom.errors }}</p>
+            </div>
+            <div class="form-group my-label">
+                <label class="control-label col-sm-2" for="{{ add_emp_form.email.id_for_label }}">Email:</label>
+                <div class="col-sm-12">
+                    <!--<input type="text" class="form-control" data-validation="length alphanumeric" data-validation-length="min4" id="cin" placeholder="Entrer le CIN" required>-->
+                    {{ add_emp_form.email }}
+                    
+                </div>
+                <p class="col-sm-2" class="show-inf-error" id="email-show-inf">{{ add_emp_form.email.errors }}</p>
+            </div>
+            <div class="form-group my-label">
+                <label class="control-label col-sm-2" for="{{ add_emp_form.tel.id_for_label }}">Tel:</label>
+                <div class="col-sm-12">
+                    <!--<input type="text" class="form-control" data-validation="length alphanumeric" data-validation-length="min4" id="cin" placeholder="Entrer le CIN" required>-->
+                    {{ add_emp_form.tel }}
+                    
+                </div>
+                <p class="col-sm-2" class="show-inf-error" id="tel-show-inf">{{ add_emp_form.tel.errors }}</p>
+            </div>
+            <div class="form-group my-label">
+                <label class="control-label col-sm-2" for="{{ add_emp_form.service.id_for_label }}">Service:</label>
+                <div class="col-sm-12">
+                    <!--<input type="text" class="form-control" data-validation="length alphanumeric" data-validation-length="min4" id="cin" placeholder="Entrer le CIN" required>-->
+                    {{ add_emp_form.service }}
+                    
+                </div>
+                <p class="col-sm-2" class="show-inf-error" id="service-show-inf">{{ add_emp_form.service.errors }}</p>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-12">
+                    <button type="submit" class="btn btn-info">Ajouter</button>
+                    <a href="{% url 'index_superRH_hist_employes' %}"><button type="button" id="btn-reteur-historique-page" class="btn reteur-btn">Reteur</button></a>
+                </div>
+            </div>
+            
+        </form>
+        <script>
+            $(document).ready(function(){
+                $('#cin').keyup(function(e){
+                    var $cin=$(this).val();
+                    $.ajax({
+                            url: '{% url "check_cin" %}',
+                            data: {
+                                'cin': $cin,
+                                'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val()
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.is_taken) {
+                                    swal(
+                                        'Attendez !',
+                                        'Cet employe deja exist !',
+                                        'info'
+                                    )
+                                }
+                            }
+                        });
+                });
+            });
+        </script>
+    </div>
+{% endblock ajouter_employe %}

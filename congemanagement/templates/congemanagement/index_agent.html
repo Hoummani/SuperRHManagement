@@ -1,0 +1,373 @@
+{% load static %}
+<html class="no-js">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>marsaRH</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A sidebar menu as seen on the Google Nexus 7 website" />
+	<meta name="keywords" content="google nexus 7 menu, css transitions, sidebar, side menu, slide out menu" />
+	<meta name="author" content="Codrops" />
+    <link rel="shortcut icon" href="{% static 'congemanagement/css/images/index' %}"/>
+    <!--<link rel="stylesheet" type="text/css" media="screen" href="{% static 'congemanagement/css/roboto.css' %}" />-->
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'congemanagement/css/sweetalert2.min.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'congemanagement/css/index_agent_style.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'congemanagement/css/bootstrap.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'congemanagement/css/sweetalert2.min.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'congemanagement/css/jquery.dynatable.css' %}" />
+    <script src="{% static 'congemanagement/js/jquery-3.2.1.js' %}"></script>
+    <script src="{% static 'congemanagement/js/jquery.dynatable.js' %}"></script>
+    <script src="{% static 'congemanagement/js/sweetalert2.min.js' %}"></script>
+    <!--<link rel="stylesheet" type="text/css" media="screen" href="{% static 'congemanagement/css/demo.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'congemanagement/css/component.css' %}" />-->
+    <script src="{% static 'congemanagement/js/bootstrap.js' %}"></script>
+</head>
+<body>
+    <div class="show-flash-messages">
+        {% if messages %}
+        <ul class="messages">
+            {% for msg in messages %}       
+                <li>
+                    <div class="alert alert-{{msg.level_tag}}" id="alert-{{msg.level_tag}}" role="alert">
+                    {{msg.message}}
+                    </div>
+                </li>
+            {% endfor %}
+            <!--<li><div class="alert alert-success" role="alert">Email sent successfully.</div></li>
+            <li><div class="alert alert-info" role="alert">All items on this page have free shipping.</div></li>
+            <li><div class="alert alert-warning" role="alert">You will need to change your password in one week.</div></li>
+            <li><div class="alert alert-error" id="show-error-messages" role="alert">We could not process your request at this time.</div></li>-->
+        </ul>
+        {% endif %}
+    </div>
+    <div id="container_global_website">
+        <header id="header-page">
+            <div class="menu-header">
+                <img src="{% static 'congemanagement/css/images/menu-icon.png' %}"/>
+            </div>
+            <div class="logo-marsa"><img src="{% static 'congemanagement/css/images/Marsa-Maroc.png' %}"/></div>
+            <div class="user-account">
+                <div class="img-user">
+                    <!--<img src="{% static 'congemanagement/css/images/icons8-male-user-32.png' %}"/>-->
+                    <!--<div class="espace_user_image"></div>
+                    <span class="connected"></span><span>Agent</span>-->
+                    <div class="about"><a  href="#">Aide</a></div>
+                </div>
+            </div>
+            <div class="logout">
+                <!--<button>Deconnexion</button>-->
+                <div class="about"><a href="#" >Tour d'application</a></div>
+            </div>
+        </header>
+        <div id="section_page">
+            <nav id="navbar">
+                <div class="item-account-sidebar">
+                    <div class="item-user-img"><span class="user-existe">@</span></div>
+                    <div id="title-username">Agent Standard</div>
+                </div>
+                <div class="navigation-options">
+                    <a href="#" class="list-nav-bar-a"><li class="list-nav-bar"><span class="fonticon">&#85;</span>Profile</li></a>
+                    <a href="#" class="list-nav-bar-a"><li class="list-nav-bar"><span class="fonticon">&#68;</span>Calendrier</li></a>
+                    <a href="#" class="list-nav-bar-a"><li class="list-nav-bar"><span class="fonticon">&#80;</span>Historique<span class="btn-notification-historique">3</span></li></a>
+                    <a href="#" class="list-nav-bar-a"><li class="list-nav-bar"><span class="fonticon">&#44;</span>Notification<span class="btn-notification">1</span></li></a>
+                    <a href="#" class="list-nav-bar-a"><li class="list-nav-bar"><span class="fonticon">&#83;</span>Configuration</li></a>
+                    <a href="{% url 'logout' %}"><button class="logou-button">Deconnexion</button></a>
+                </div>
+                <!--<button class="logou-button"><a href="{% url 'logout' %}">Deconnexion</a></button>-->
+            </nav>
+            <div id="content-page">
+                <div id="conge-application-historique">
+                    <h1>Historique de conge</h1>
+                    <div class="container">
+                        <table id="conge_table" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>CIN</th>
+                                    <th>Nom et Prenom</th>
+                                    <th>Date demande</th>
+                                    <th>De</th>
+                                    <th>Au</th>
+                                    <th>Nombre jour</th>
+                                    <th>Decision</th>
+                                    <!--<th>Options</th>-->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tbody>
+                                    <tr>
+                                        <td>HH234566</td>
+                                        <td>Zahra Oualla</td>
+                                        <td>2018-03-15</td>
+                                        <td>2018-03-15</td>
+                                        <td>2018-03-15</td>
+                                        <td>5</td>
+                                        <td>En attente</td>
+                                        <!--<td><a href="#" class="editer-demande-a a-edit-background">&#83;</a><a href="#" class="supprimer-demande-a a-supp-background">&#215;</a></td>-->
+                                        <!--<td><a href="#" class="icon-ed-current-leave"><img src="{% static 'congemanagement/css/images/icons/pen point tip.1.svg' %}"/></a><a href="#" class="icon-supp-current-leave"><img src="{% static 'congemanagement/css/images/icons/trash can.1.svg' %}"/></a></td>-->
+                                    </tr>
+                                    <tr>
+                                        <td>HH014560</td>
+                                        <td>Zahra Oualla</td>
+                                        <td>2018-03-15</td>
+                                        <td>2018-03-15</td>
+                                        <td>2018-03-15</td>
+                                        <td>5</td>
+                                        <td>En attente</td>
+                                        <!--<td><a href="#" class="icon-ed-current-leave"><img src="{% static 'congemanagement/css/images/icons/pen point tip.1.svg' %}"/></a><a href="#" class="icon-supp-current-leave"><img src="{% static 'congemanagement/css/images/icons/trash can.1.svg' %}"/></a></td>-->
+                                    </tr>
+                                    <tr>
+                                        <td>HH024500</td>
+                                        <td>Ismail Talhaoui</td>
+                                        <td>2018-03-15</td>
+                                        <td>2018-03-15</td>
+                                        <td>2018-03-15</td>
+                                        <td>5</td>
+                                        <td>En attente</td>
+                                        <!--<td><a href="#" class="icon-ed-current-leave"><img src="{% static 'congemanagement/css/images/icons/pen point tip.1.svg' %}"/></a><a href="#" class="icon-supp-current-leave"><img src="{% static 'congemanagement/css/images/icons/trash can.1.svg' %}"/></a></td>-->
+                                    </tr>
+                                    <tr>
+                                        <td>HH034500</td>
+                                        <td>Ismail Talhaoui</td>
+                                        <td>2018-03-15</td>
+                                        <td>2018-03-15</td>
+                                        <td>2018-03-15</td>
+                                        <td>5</td>
+                                        <td>En attente</td>
+                                        <!--<td><a href="#" class="icon-ed-current-leave"><img src="{% static 'congemanagement/css/images/icons/pen point tip.1.svg' %}"/></a><a href="#" class="icon-supp-current-leave"><img src="{% static 'congemanagement/css/images/icons/trash can.1.svg' %}"/></a></td>-->
+                                    </tr>
+                                    <tr>
+                                        <td>HH234566</td>
+                                        <td>Ismail Talhaoui</td>
+                                        <td>2018-03-15</td>
+                                        <td>2018-03-15</td>
+                                        <td>2018-03-15</td>
+                                        <td>5</td>
+                                        <td>En attente</td>
+                                        <!--<td><a href="#" class="icon-ed-current-leave"><img src="{% static 'congemanagement/css/images/icons/pen point tip.1.svg' %}"/></a><a href="#" class="icon-supp-current-leave"><img src="{% static 'congemanagement/css/images/icons/trash can.1.svg' %}"/></a></td>-->
+                                    </tr>
+                                    <tr>
+                                        <td>HH234566</td>
+                                        <td>Ismail Talhaoui</td>
+                                        <td>2018-03-15</td>
+                                        <td>2018-03-15</td>
+                                        <td>2018-03-15</td>
+                                        <td>5</td>
+                                        <td>En attente</td>
+                                        <!--<td><a href="#" class="icon-ed-current-leave"><img src="{% static 'congemanagement/css/images/icons/pen point tip.1.svg' %}"/></a><a href="#" class="icon-supp-current-leave"><img src="{% static 'congemanagement/css/images/icons/trash can.1.svg' %}"/></a></td>-->
+                                    </tr>
+                                    <tr>
+                                        <td>HH234566</td>
+                                        <td>Alkama Mostafa</td>
+                                        <td>2018-03-15</td>
+                                        <td>2018-03-15</td>
+                                        <td>2018-03-15</td>
+                                        <td>5</td>
+                                        <td>En attente</td>
+                                        <!--<td><a href="#" class="icon-ed-current-leave"><img src="{% static 'congemanagement/css/images/icons/pen point tip.1.svg' %}"/></a><a href="#" class="icon-supp-current-leave"><img src="{% static 'congemanagement/css/images/icons/trash can.1.svg' %}"/></a></td>-->
+                                    </tr>
+                                    <tr>
+                                        <td>HH234566</td>
+                                        <td>Alkama Mostafa</td>
+                                        <td>2018-03-15</td>
+                                        <td>2018-03-15</td>
+                                        <td>2018-03-15</td>
+                                        <td>5</td>
+                                        <td>En attente</td>
+                                        <!--<td><a href="#" class="icon-ed-current-leave"><img src="{% static 'congemanagement/css/images/icons/pen point tip.1.svg' %}"/></a><a href="#" class="icon-supp-current-leave"><img src="{% static 'congemanagement/css/images/icons/trash can.1.svg' %}"/></a></td>-->
+                                    </tr>
+                                    <tr>
+                                        <td>HH234566</td>
+                                        <td>Alkama Mostafa</td>
+                                        <td>2018-03-15</td>
+                                        <td>2018-03-15</td>
+                                        <td>2018-03-15</td>
+                                        <td>5</td>
+                                        <td>En attente</td>
+                                        <!--<td><a href="#" class="icon-ed-current-leave"><img src="{% static 'congemanagement/css/images/icons/pen point tip.1.svg' %}"/></a><a href="#" class="icon-supp-current-leave"><img src="{% static 'congemanagement/css/images/icons/trash can.1.svg' %}"/></a></td>-->
+                                    </tr>
+                                    <tr>
+                                        <td>HH2348906</td>
+                                        <td>Badr Ghazouane</td>
+                                        <td>2018-03-15</td>
+                                        <td>2018-03-15</td>
+                                        <td>2018-03-15</td>
+                                        <td>6</td>
+                                        <td>Refuse</td>
+                                        <!--<td><a href="#" class="icon-ed-current-leave"><img src="{% static 'congemanagement/css/images/icons/pen point tip.1.svg' %}"/></a><a href="#" class="icon-supp-current-leave"><img src="{% static 'congemanagement/css/images/icons/trash can.1.svg' %}"/></a></td>-->
+                                    </tr>
+                                    <tr>
+                                        <td>HH674566</td>
+                                        <td>Omar Nassim</td>
+                                        <td>2018-03-15</td>
+                                        <td>2018-03-15</td>
+                                        <td>2018-03-15</td>
+                                        <td>7</td>
+                                        <td>Accepte</td>
+                                        <!--<td><a href="#" class="icon-ed-current-leave"><img src="{% static 'congemanagement/css/images/icons/pen point tip.1.svg' %}"/></a><a href="#" class="icon-supp-current-leave"><img src="{% static 'congemanagement/css/images/icons/trash can.1.svg' %}"/></a></td>-->
+                                    </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="container item-operation-with-demande">
+                        <div class="operation-with-demande container">
+                            <div class="container-button-add-demande"><button class="button-add-demande" id="btn-ajouter-demande">Ajouter demande </button></div>
+                            <!--<div></div>
+                            <form id="suppression-conge-from">
+                                <input  type="text" id="selected_cin_demande" placeholder="Selectionner demande"/>
+                                <a href="#"><input id="editier-demande-btn" type="button" value="Editer"/></a>
+                                <input type="submit" id="submit-supp-demande" value="Supprimer"/>
+                                <div class="show-information-form"></div>
+                            </form>-->
+                            <form id="suppression-conge-form" method="post" action="">
+
+                                <input type="text" id="selected_cin_demande" placeholder="Selectionner l'element a editer " data-validation="length alphanumeric" data-validation-length="min4" required/>
+                                <a href="#" id="icon-ed-current-leave"><img src="{% static 'congemanagement/css/images/icons/pen point tip.1.svg' %}"/></a>
+                                <input type="submit" value="" id="submit-supp-current-leave"/>
+                                <!--<a href="#" id="icon-supp-current-leave"><img src="{% static 'congemanagement/css/images/icons/trash can.1.svg' %}"/></a>-->
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!--            Ajouter une demande                         -->
+                <div class="" id="container-add-leave-demande">
+                    <h1 class="h1-to-add-leave-demande">Formulaire d'ajouter une demande</h1>
+                    <form id="form-add-leave" class="form-horizontal container" method="post" action="{% url 'index_agent' %}">
+                        {% csrf_token %}
+                        <!--     success  save     -->
+                        <div class="form-group my-label">
+                            <label class="control-label col-sm-2" for="cin">CIN:</label>
+                            <div class="col-sm-10">
+                                <!--<input type="text" class="form-control" data-validation="length alphanumeric" data-validation-length="min4" id="cin" placeholder="Entrer le CIN" required>-->
+                                {{ add_leave_form.cin }}
+                            </div>
+                            <p class="col-sm-2" id="cin-show-inf"></p>
+                        </div>
+                        <!--
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="nom">Nom:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" data-validation="length alphanumeric" data-validation-length="min4" id="nom" placeholder="Entrer le Nom"required />
+                            </div>
+                            <p class="col-sm-2" id="nom-show-inf"></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="prenom">Prenom:</label>
+                            <div class="col-sm-10">
+                                <input type="text" data-validation="length alphanumeric" data-validation-length="min4" class="form-control" id="prenom" placeholder="Entrer le Prenom" required />
+                            </div>
+                            <p class="col-sm-2" id="prenom-show-inf"></p>
+                        </div>
+                        -->
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="date-demande">Date demande:</label>
+                            <div class="col-sm-10">
+                                <!--<input type="date" class="form-control" data-validation="date" data-validation-format="yyyy-mm-dd" id="date-demande" placeholder="yyyy-mm-dd" required />-->
+                                {{ add_leave_form.date_demande }}
+                            </div>
+                            <p class="col-sm-2" id="date-demande-show-inf"></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="date-sortie">Date de sortie:</label>
+                            <div class="col-sm-10">
+                                <!--<input type="date" class="form-control" data-validation="date" data-validation-format="yyyy-mm-dd" id="date-sortie" placeholder="yyyy-mm-dd" required />-->
+
+                                {{ add_leave_form.date_sortie_conge }}
+                            </div>
+                            <p class="col-sm-2" id="date-sortie-show-inf"></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="date-entre">Date d'entre:</label>
+                            <div class="col-sm-10">
+                                <!--<input type="date" class="form-control" data-validation="date" data-validation-format="yyyy-mm-dd" id="date-entre" placeholder="yyyy-mm-dd" required />-->
+                                {{ add_leave_form.date_entre_conge }}
+                            </div>
+                            <p class="col-sm-2" id="date-entre-show-inf"></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="nbr-jour">Nombre de jour:</label>
+                            <div class="col-sm-10">
+                                <!--<input type="number" class="form-control" id="nbr-jour" placeholder="Entrer le nombre de jours planifiees" />-->
+                                {{ add_leave_form.nbr_jour }}
+                            </div>
+                            <p class="col-sm-2" id="nbr-jour-show-inf"></p>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-info">Ajouter</button>
+                                <button type="button" id="btn-reteur-historique-page" class="btn reteur-btn">Reteur</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!--               Editer une demande !                             -->
+                <div id="container-edit-leave-demande">
+                    <h1>Formulaire d'editer une demande</h1>
+                    <form id="form-edit-leave" class="form-horizontal container">
+                        <div class="form-group my-label">
+                            <label class="control-label col-sm-2"  for="ed-cin">CIN:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" data-validation="length alphanumeric" data-validation-length="min4" id="ed-cin" placeholder="Entrer le CIN" required>
+                            </div>
+                            <p class="col-sm-2" id="ed-cin-show-inf"></p>
+                        </div>
+                        <!--
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="ed-nom">Nom:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" data-validation="length alphanumeric" data-validation-length="min4" id="ed-nom" placeholder="Entrer le Nom"required />
+                            </div>
+                            <p class="col-sm-2" id="ed-nom-show-inf"></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="ed-prenom">Prenom:</label>
+                            <div class="col-sm-10">
+                                <input type="text" data-validation="length alphanumeric" data-validation-length="min4" class="form-control" id="ed-prenom" placeholder="Entrer le Prenom" required />
+                            </div>
+                            <p class="col-sm-2" id="ed-prenom-show-inf"></p>
+                        </div>
+                        -->
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="ed-date-demande">Date demande:</label>
+                            <div class="col-sm-10">
+                                <input type="date" class="form-control" data-validation="date" data-validation-format="yyyy-mm-dd" id="ed-date-demande" placeholder="yyyy-mm-dd" required />
+                            </div>
+                            <p class="col-sm-2" id="ed-date-demande-show-inf"></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="ed-date-sortie">Date de sortie:</label>
+                            <div class="col-sm-10">
+                                <input type="date" class="form-control" data-validation="date" data-validation-format="yyyy-mm-dd" id="ed-date-sortie" placeholder="yyyy-mm-dd" required />
+                            </div>
+                            <p class="col-sm-2" id="ed-date-sortie-show-inf"></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="ed-date-entre">Date d'entre:</label>
+                            <div class="col-sm-10">
+                                <input type="date" class="form-control" data-validation="date" data-validation-format="yyyy-mm-dd" id="ed-date-entre" placeholder="yyyy-mm-dd" required />
+                            </div>
+
+                            <p class="col-sm-2" id="ed-date-entre-show-inf"></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="ed-nbr-jour">Nombre de jour:</label>
+                            <div class="col-sm-10">
+                                <input type="date" class="form-control" id="ed-nbr-jour" placeholder="Entrer le nombre de jours planifiees" />
+                            </div>
+                            <p class="col-sm-2" id="ed-nbr-jour-show-inf"></p>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-info">Editer</button>
+                                <button type="button" id="ed-btn-reteur-historique-page" class="btn reteur-btn">Reteur</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script src="{% static 'congemanagement/js/index_agent_script.js' %}"></script>
+<script src="{% static 'congemanagement/js/form-validator.js' %}"></script>
+</body>
+</html>

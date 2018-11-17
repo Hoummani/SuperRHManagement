@@ -1,0 +1,56 @@
+{% extends 'congemanagement/base_index_agent.html' %}
+{% load static %}
+{% block edit_demande %}
+   <div id="container-edit-leave-demande">
+                    <h1>Formulaire d'editer une demande</h1>
+                    <form id="form-edit-leave" method="post" class="form-horizontal container">
+                        {% csrf_token %}
+                        <div class="form-group my-label">
+                            <label class="control-label col-sm-2"  for="ed-cin">CIN:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" data-validation="length alphanumeric" data-validation-length="min4" id="ed-cin" placeholder="Entrer le CIN" value="{{current_cin }}" required/>    
+                            </div>
+                            <p class="col-sm-2" id="ed-cin-show-inf"></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="ed-date-demande">Date demande:</label>
+                            <div class="col-sm-10">
+                                <!--<input type="date" class="form-control" data-validation="date" data-validation-format="yyyy-mm-dd" id="ed-date-demande" placeholder="yyyy-mm-dd" required />-->
+                                {{ edit_leave_form.date_demande_edit }}
+                            </div>
+                            <p class="col-sm-2" id="ed-date-demande-show-inf">{{ edit_leave_form.date_demande_edit.errors }}</p>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="ed-date-sortie">Date de debut:</label>
+                            <div class="col-sm-10">
+                                <!--<input type="date" class="form-control" data-validation="date" data-validation-format="yyyy-mm-dd" id="ed-date-sortie" placeholder="yyyy-mm-dd" required />-->
+                                {{ edit_leave_form.date_debut_conge_edit }}
+                            </div>
+                            <p class="col-sm-2" id="ed-date-sortie-show-inf">{{ edit_leave_form.date_sortie_conge_edit.errors }}</p>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="ed-date-entre">Date de fin:</label>
+                            <div class="col-sm-10">
+                                <!--<input type="date" class="form-control" data-validation="date" data-validation-format="yyyy-mm-dd" id="ed-date-entre" placeholder="yyyy-mm-dd" required />-->
+                                {{ edit_leave_form.date_fin_conge_edit }}
+                                
+                            </div>
+                            <p class="col-sm-2" id="ed-date-entre-show-inf">{{ edit_leave_form.date_entre_conge_edit.errors }}</p>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="ed-nbr-jour">Nombre de jour:</label>
+                            <div class="col-sm-10">
+                                <!--<input type="date" class="form-control" id="ed-nbr-jour" placeholder="Entrer le nombre de jours planifiees" />-->
+                                {{ edit_leave_form.nbr_jour_edit }}
+                            </div>
+                            <p class="col-sm-2" id="ed-nbr-jour-show-inf">{{ edit_leave_form.nbr_jour_edit.errors }}</p>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-info">Editer</button>
+                                <a href="{% url 'index_agent_historique' %}"><button type="button" id="ed-btn-reteur-historique-page" class="btn reteur-btn">Reteur</button></a>
+                            </div>
+                        </div>
+                    </form>
+                </div> 
+{% endblock edit_demande %}

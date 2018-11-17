@@ -1,0 +1,118 @@
+{% load static %}
+<html class="no-js">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>marsaRH</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="{% static 'congemanagement/css/images/index' %}"/>
+    <!--<link rel="stylesheet" type="text/css" media="screen" href="{% static 'congemanagement/css/roboto.css' %}" />-->
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'congemanagement/css/sweetalert2.min.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'congemanagement/css/index_agent_style.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'congemanagement/css/index_superRH_style.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'congemanagement/css/bootstrap.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'congemanagement/css/sweetalert2.min.css' %}" />
+    
+    <!-- For calendar        -->
+    
+
+    <!-- end for calendar   -->
+    {% block links_superRH %}
+    {% endblock links_superRH %}
+    <script src="{% static 'congemanagement/js/jquery-3.2.1.js' %}"></script>
+    <script src="{% static 'congemanagement/js/sweetalert2.min.js' %}"></script>
+    <!--<link rel="stylesheet" type="text/css" media="screen" href="{% static 'congemanagement/css/demo.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'congemanagement/css/component.css' %}" />-->
+    <script src="{% static 'congemanagement/js/bootstrap.js' %}"></script>
+</head>
+<body>
+    <div class="show-flash-messages">
+        {% if messages %}
+        <ul class="messages">
+            {% for msg in messages %}       
+                <li>
+                    <div class="alert alert-{{msg.level_tag}}" id="alert-{{msg.level_tag}}" role="alert">
+                    {{msg.message}}
+                    <span class="x">X</span></div>
+                </li>
+            {% endfor %}
+            <!--<li><div class="alert alert-success" role="alert">Email sent successfully.</div></li>
+            <li><div class="alert alert-info" role="alert">All items on this page have free shipping.</div></li>
+            <li><div class="alert alert-warning" role="alert">You will need to change your password in one week.</div></li>
+            <li><div class="alert alert-error" id="show-error-messages" role="alert">We could not process your request at this time.</div></li>-->
+        </ul>
+        {% endif %}
+    </div>
+    <div id="container_global_website">
+        <header id="header-page">
+            <div class="menu-header">
+                <img src="{% static 'congemanagement/css/images/menu-icon.png' %}"/>
+            </div>
+            <div class="logo-marsa"><img src="{% static 'congemanagement/css/images/Marsa-Maroc.png' %}"/></div>
+            <div class="user-account">
+                <div class="img-user">
+                    <!--<img src="{% static 'congemanagement/css/images/icons8-male-user-32.png' %}"/>-->
+                    <!--<div class="espace_user_image"></div>
+                    <span class="connected"></span><span>Agent</span>-->
+                    <div class="about"><a  href="#">Aide</a></div>
+                </div>
+            </div>
+            <div class="logout">
+                <!--<button>Deconnexion</button>-->
+                <div class="about"><a href="#" >Application</a></div>
+            </div>
+        </header>
+        <div id="section_page">
+            <nav id="navbar">
+                <div class="item-account-sidebar">
+                    <div class="item-userRH-img"><span class="userRH-existe">@</span></div>
+                    <div id="title-username">Responsable RH</div>
+                </div>
+                <div class="navigation-options">
+                    <a href="{% url 'profileRH' %}" class="list-nav-bar-a"><li class="list-nav-bar"><span class="fonticon">&#85;</span>Profile</li></a>
+                    <a href="{% url 'index_superRH_calendar_leaves' %}" class="list-nav-bar-a"><li class="list-nav-bar"><span class="fonticon">&#68;</span>Calendrier</li></a>
+                    <a href="{% url 'index_superRH_hist_employes' %}" class="list-nav-bar-a"><li class="list-nav-bar"><span class="fonticon">&#82;</span>Employes<div class="btn-notification-emp green_notification">2</div></li></a>
+                    <a href="{% url 'index_superRH_historique_conges' %}" class="list-nav-bar-a"><li class="list-nav-bar"><span class="fonticon">&#80;</span>Historiques</li></a>
+                    <a href="#" class="list-nav-bar-a"><li class="list-nav-bar"><span class="fonticon">&#44;</span>Notification<span class="btn-notification">1</span></li></a>
+                    <a href="{% url 'configurate_conge' %}" class="list-nav-bar-a"><li class="list-nav-bar"><span class="fonticon">&#83;</span>Configuration</li></a>
+                    <a href="{% url 'logout' %}"><button class="logou-button">Deconnexion</button></a>
+                </div>
+                <!--<button class="logou-button"><a href="{% url 'logout' %}">Deconnexion</a></button>-->
+            </nav>
+            <div id="content-page">
+                <!-- Historique conge bloc -->
+                {% block conge_app_historique %}
+                {% endblock conge_app_historique %}
+                
+                <!-- Employe historique bloc   -->
+                {% block employes_historique %}
+                {% endblock employes_historique %}
+                <!--Ajouter une employe-->
+                {% block ajouter_employe %}
+                {% endblock ajouter_employe %}
+                <!-- Profile bloc -->
+                {% block user_profile %}
+                {% endblock user_profile %}
+                {% block changer_password %}
+                {% endblock changer_password %}
+                <!-- Calendre conge -->
+                {% block calendre_leaves %}
+                {% endblock calendre_leaves %}
+                <!--   configuration     -->
+                {% block block_configurations %}
+                {% endblock block_configurations %}
+                {% block add_disable_day %}
+                {% endblock add_disable_day %}
+                
+            </div>
+        </div>
+    </div>
+{% block js_files_superRH %}
+{% endblock js_files_superRH %}
+<script src="{% static 'congemanagement/js/index_agent_script.js' %}"></script>-
+<script src="{% static 'congemanagement/js/index_superRH_script.js' %}"></script>
+<script src="{% static 'congemanagement/js/form-validator.js' %}"></script>
+
+</body>
+</html>
+

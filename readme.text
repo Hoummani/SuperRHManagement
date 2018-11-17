@@ -1,0 +1,40 @@
+take screenshot:
+
+    import -window root image1.png
+
+
+take img screenshot:
+    import calc.png
+
+
+
+//++++++++++++++++++++++++++++++++++++++++++++++
+
+GNOME screenshot:
+1-box-shadow
+    gnome-screenshot --window --border-effect=shadow --delay=10
+
+2-zone de bureau:
+     gnome-screenshot --area --delay=5
+3-Options:
+    -w, --window                  Capturer une fenêtre plutôt que l'écran complet
+
+    -a, --area                    Capturer une zone de l'écran plutôt que l'écran complet
+
+    -b, --include-border          Inclure la bordure de la fenêtre dans la capture d'écran
+
+    -B, --remove-border           Enlever la bordure de la fenêtre dans la capture d'écran
+
+    -d, --delay=temps_en_secondes Effectue une capture d'écran après le délai indiqué [en secondes]
+
+    -e, --border-effect=effet     Effet à appliquer à la bordure (ombre, bordure ou aucun)
+
+    -i, --interactive             Lance le menu des options de capture
+
+    --display=AFFICHAGE           Affichage X à utiliser
+
+4- Lien diagramme de gantt:
+    https://www.tomsplanner.fr/?template=new#doc=hNugEiLGbiPJeuHqFdZR
+
+
+5- Use application

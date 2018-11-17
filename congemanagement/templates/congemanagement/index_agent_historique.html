@@ -1,0 +1,232 @@
+{% extends 'congemanagement/base_index_agent.html' %}
+{% load static %}
+
+
+{% block conge_application_historique %}
+    <div id="conge-application-historique">
+                    <h1>Historique de conge</h1>
+                    <div class="container">
+                        <div class="container_search_hist_conge">
+                            <input type="text" id="search_hist_conge" placeholder="Chercher par le nom ou le prenom" onkeyup="myFunction()" class="form-control"/>
+                        </div>
+                        <table id="conge_table" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>CIN</th>
+                                    <th>Nom et Prenom</th>
+                                    <th>Date demande</th>
+                                    <th>De</th>
+                                    <th>Au</th>
+                                    <th>Nombre jour</th>
+                                    <th>Decision</th>
+                                    <th>Options</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                {% for app in apps_conge %}
+                                        <tr>
+                                            <td>{{ app.conge_app_application_FK.id }}</td>
+                                            <td>{{ app.employe_application_FK.cin }}</td>
+                                            <td>{{ app.employe_application_FK.nom }} {{ app.employe_application_FK.prenom }}</td>
+                                            <td>{{ app.conge_app_application_FK.date_demande }}</td>
+                                            <td>{{ app.conge_app_application_FK.date_debut_conge }}</td>
+                                            <td>{{ app.conge_app_application_FK.date_fin_conge }}</td>
+                                            <td>{{ app.conge_app_application_FK.nbr_jour }}</td>
+                                            <td>{{ app.conge_app_application_FK.etat_conge }}</td>
+                                            <td><span class="edit_conge_demande"><img src="{% static 'congemanagement/css/images/icons/pen point tip.1.svg' %}"/></span><span  class="supp_conge_demande"><img src="{% static 'congemanagement/css/images/icons/trash can.1.svg' %}"/></span></td>
+                                        </tr>
+                                {% endfor %}
+                                <tr>
+                                    <td>#</td>
+                                    <td>---</td>
+                                    <td>---</td>
+                                    <td>---</td>
+                                    <td>---</td>
+                                    <td>---</td>
+                                    <td>---</td>
+                                    <td>---</td>
+                                    <td><a href="{% url 'index_agent_add_leave' %}" class="add_conge_demande">&#43;</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <script>
+                            $(document).ready(function(){
+                                $('.supp_conge_demande').click(function(){
+                                    var $id=$(this).parent().prev().prev().prev().prev().prev().prev().prev().prev().text();
+                                    //var $current_cin=$(this).parent().prev().prev().prev().prev().prev().prev().prev().text();
+                                    var $decision=$(this).parent().prev().text();
+                                    //swalDelete($current_cin);
+                                    //alert($decision);
+                                    
+                                    swal({
+                                        title: 'Are you sure?',
+                                        text: "It will be deleted permanently!",
+                                        type: 'warning',
+                                        showCancelButton: true,
+                                        showCloseButton: true,
+                                        confirmButtonColor: '#3085d6',
+                                        cancelButtonColor: '#d33',
+                                        confirmButtonText: 'Yes, delete it!',
+                                        showLoaderOnConfirm: true,
+                                        backdrop:'rgba(0,0,123,0.4)',
+                                        
+                                        preConfirm: function(){
+                                            return new Promise(function(resolve){
+                                                $.ajax({
+                                                    url: '{% url "delete_conge_demande" %}',
+                                                    data: {
+                                                        'id_conge': $id,
+                                                        'decision':$decision,
+                                                        'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val()
+                                                    },
+                                                    dataType: 'json',
+                                                    success: function (data) {
+                                                        if (data.is_deleted) {
+                                                            swal(
+                                                                'Deleted !',
+                                                                data.is_deleted,
+                                                                'success'
+                                                            )
+                                                        }
+                                                        if(data.warning_msg){
+                                                            swal(
+                                                                'Attendez!',
+                                                                data.warning_msg,
+                                                                'warning'
+                                                            )
+                                                        }
+                                                        else{
+                                                            
+                                                        }
+                                                    }
+                                                });
+                                            });
+                                        },
+                                        allowOutsideClick: false
+                                    });
+                                });
+                                $('.edit_conge_demande').click(function(e){
+                                    var $current_cin=$(this).parent().prev().prev().prev().prev().prev().prev().prev().text();
+                                    //var $date_demande=$(this).parent().prev().prev().prev().prev().prev().text();
+                                    var $decision=$(this).parent().prev().text();
+                                    
+                                    if($decision=='Accepte' || $decision=='Refuse' || $decision=='Depasse'){
+                                        e.preventDefault();
+                                        swal(
+                                            'Desolé!',
+                                            'On ne peut pas modifier une demande deja traitee !',
+                                            'warning'
+                                        )
+                                    }
+                                    else{
+                                        $('#conge-application-historique').hide();
+                                        $('#editleave_container_form').fadeIn(1000);
+                                        $('#cin_edit').attr('value',$current_cin);
+                                        
+                                    }
+                                });
+                            }); 
+                        </script>
+                    </div>
+                    <!--
+                    <div class="container item-operation-with-demande">
+                        <div class="operation-with-demande container">
+                            <a href="{% url 'index_agent_add_leave' %}" class="container-button-add-demande"><button class="button-add-demande" id="btn-ajouter-demande">Ajouter demande </button></a>
+                            
+                            <form id="suppression-conge-form" method="GET" action="{% url 'index_agent_edit_leave' %}">
+                                {% csrf_token %}
+                                <input type="text" name="selected_cin_demande" id="selected_cin_demande" placeholder="Selectionner l'element a editer " data-validation="length alphanumeric" data-validation-length="min4" required/>
+                                
+                                <input type="submit" id="icon-ed-current-leave" value=""/>
+                                <a href="#" value="" id="submit-supp-current-leave">Supprimer</a>
+                                
+                            </form>
+                        </div>
+                    </div>-->
+    </div>
+    <script type="text/javascript">
+                    function myFunction() {
+                                    var table,input,filter, tr, td, i, tbody;
+                                    input = document.getElementById("search_hist_conge");
+                                    filter = input.value.toUpperCase();
+                                    table = document.getElementById("conge_table");
+                                    tbody = table.getElementsByTagName("tbody");
+                                    tr = table.getElementsByTagName("tr");
+                                    for (i = 0; i < tr.length; i++) {
+                                        td = tr[i].getElementsByTagName("td")[2];
+                                        if (td) {
+                                            if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                                                tr[i].style.display = "";
+                                            } else {
+                                                tr[i].style.display = "none";
+                                            }
+                                        }       
+                                    }
+                    }
+
+    </script>
+    <div id="editleave_container_form">
+        <h1>Modifier une demande d'un conge</h1>
+        <form id="form-edit-leave" method="post" class="form-horizontal container">
+            {% csrf_token %}
+            <!--     success  save     -->
+            <div class="form-group my-label">
+                <label class="control-label col-sm-2" for="{{ form.cin_edit.id_for_label }}">CIN:</label>
+                <div class="col-sm-12">
+                    <!--<input type="text" class="form-control" data-validation="length alphanumeric" data-validation-length="min4" id="cin" value="{{ cin }}" placeholder="CIN" required>-->
+                    {{ form.cin_edit }}
+
+                </div>
+                <p class="col-sm-2" class="show-inf-error" id="cin_edit-show-inf">{{ form.cin_edit.errors }}</p>
+            </div>
+            <div class="form-group my-label">
+                <label class="control-label col-sm-2" for="{{ form.date_demande_edit.id_for_label }}">Date demande:</label>
+                <div class="col-sm-12">
+                    <!--<input type="text" class="form-control" data-validation="length alphanumeric" data-validation-length="min4" id="cin" value="{{ cin }}" placeholder="CIN" required>-->
+                    {{ form.date_demande_edit }}
+
+                </div>
+                <p class="col-sm-2" class="show-inf-error" id="cin_edit-show-inf">{{ form.date_demande_edit.errors }}</p>
+            </div>
+            <div class="form-group my-label">
+                <label class="control-label col-sm-2" for="{{ form.date_debut_conge_edit.id_for_label }}">Date debut de congé:</label>
+                <div class="col-sm-12">
+                    <!--<input type="text" class="form-control" data-validation="length alphanumeric" data-validation-length="min4" id="cin" value="{{ cin }}" placeholder="CIN" required>-->
+                    {{ form.date_debut_conge_edit }}
+
+                </div>
+                <p class="col-sm-2" class="show-inf-error" id="cin_edit-show-inf">{{ form.date_debut_conge_edit.errors }}</p>
+            </div>
+            <div class="form-group my-label">
+                <label class="control-label col-sm-2" for="{{ form.date_fin_conge_edit.id_for_label }}">Date fin de congé:</label>
+                <div class="col-sm-12">
+                    <!--<input type="text" class="form-control" data-validation="length alphanumeric" data-validation-length="min4" id="cin" value="{{ cin }}" placeholder="CIN" required>-->
+                    {{ form.date_fin_conge_edit }}
+
+                </div>
+                <p class="col-sm-2" class="show-inf-error" id="cin_edit-show-inf">{{ form.date_fin_conge_edit.errors }}</p>
+            </div>
+            <div class="form-group my-label">
+                <label class="control-label col-sm-2" for="{{ form.nbr_jour_edit.id_for_label }}">Nombre de jours:</label>
+                <div class="col-sm-12">
+                    <!--<input type="text" class="form-control" data-validation="length alphanumeric" data-validation-length="min4" id="cin" value="{{ cin }}" placeholder="CIN" required>-->
+                    {{ form.nbr_jour_edit }}
+
+                </div>
+                <p class="col-sm-2" class="show-inf-error" id="cin_edit-show-inf">{{ form.nbr_jour_edit.errors }}</p>
+            </div>
+
+
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-12">
+                    <button type="submit" class="btn btn-info">Modifier</button>
+                    <a href="{% url 'index_agent_historique' %}"><button type="button" id="btn-reteur-historique-page" class="btn reteur-btn">Reteur</button></a>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+{% endblock conge_application_historique %}

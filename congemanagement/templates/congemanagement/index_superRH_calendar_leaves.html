@@ -1,0 +1,165 @@
+{% extends 'congemanagement/base_index_superRH.html' %}
+{% load static %}
+
+{% block links_superRH %}
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'congemanagement/css/pignose.calendar.css' %}" />
+     <link rel="stylesheet" type="text/css" media="screen" href="{% static 'congemanagement/css/datable.css' %}" />
+{% endblock links_superRH %}
+
+
+{% block calendre_leaves %}
+    <div id="calendar_leaves">
+        <h1>Calendrier de conge accordes</h1>
+        <div class="calendar"></div>
+    </div>
+    <div class="container" id="showdatable">
+        <div class="container_search_date">
+            <input type="text" placeholder="Selectionner un jour ou un mois !" name="my_input_date_min_name" id="my_input_date_min" onkeyup="myFunction()" class="form-control">
+            <!--<input type="text" id="my_input_date_max" placeholder="Date max" class="form-control"/>-->
+        </div>
+        <table id="datable_leaves" class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Nom et prenom</th>
+                    <th>Date d'entree</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for leave in leaves %}
+                    <tr>
+                        <td>{{ leave.id }}</td>
+                        <td>{{ leave.employe_application_FK.nom }} {{ leave.employe_application_FK.prenom }}</td>
+                        <td>{{ leave.conge_app_application_FK.date_fin_conge }}</td>
+                    <tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+        
+    </div>
+    <script>
+        var min_date=0
+        var max_date=0
+        
+        $(function(){
+            
+            $('.calendar').pignoseCalendar({
+		        multiple: false,
+        
+                theme: 'blue',
+                //selectOver: true,
+                initialize: true,
+                select: function(date, context) {
+                    /**
+                    * @params this Element
+                    * @params date moment[]
+                    * @params context PignoseCalendarContext
+                    * @returns void
+                    */
+
+                    // This is selected button Element.
+                    var $this = $(this);
+
+                    // You can get target element in `context` variable, This element is same `$(this)`.
+                    var $element = context.element;
+
+                    // You can also get calendar element, It is calendar view DOM.
+                    var $calendar = context.calendar;
+
+                    // Selected dates (start date, end date) is passed at first parameter, And this parameters are moment type.
+                    // If you unselected date, It will be `null`.
+         
+                    var $date1=date[0];
+                    //var $date2=date[1];
+                    if($date1!=null){
+                        var min_date=$date1.format("MMM. DD, YYYY");
+                        //var max_date=$date2.format("MMM. DD, YYYY");
+                        $("#my_input_date_min").attr('value',min_date);
+                        /*var table = document.getElementById("datable_leaves");
+                        var tbody = table.getElementsByTagName("tbody");
+                        var tr = table.getElementsByTagName("tr");
+                        var i;
+                        for (i = 0; i < tr.length; i++) {
+                            var td = tr[i].getElementsByTagName("td")[2];
+                            if(td){
+                                if(td.innerHTML==min_date){
+                                    tr[i].style.display = "";
+                                }
+                                else{
+                                    tr[i].style.display = "none";
+                                }
+                            }
+                        }*/
+                        //$("#my_input_date_max").attr('value',max_date);
+                        //alert($date1_updated+' '+$date2_updated);
+                        //format("MMM. DD, YYYY")
+                        //myFunction($date1_updated,$date2_updated);
+                        
+                    }
+                }
+            });
+            //Datable
+            // Set up your table
+            //table = $('#datable_leaves').DataTable();
+                // ... do your thing here.
+                    //if(min_date!=0 && max_date!=0){
+                      //  table.draw();
+                    //}
+                //    $('#my_input_date_min, #my_input_date_max').focus(function(){
+                 //       table.draw();
+                 //   });
+            
+            //Datable
+        });
+        /*
+        $.fn.dataTable.ext.search.push(
+            function( settings, data, dataIndex ) {
+                var min = parseInt( $("#my_input_date_min").val(), 10 );
+                var max = parseInt( $('#my_input_date_max').val(), 10 );
+                var age = parseFloat( Date.parse(data[2] )) || 0; // use data for the age column
+ 
+                if ( ( isNaN( min ) && isNaN( max ) ) ||
+                    ( isNaN( min ) && age <= max ) ||
+                    ( min <= age   && isNaN( max ) ) ||
+                    ( min <= age   && age <= max ) )
+                {
+                    return true;
+                }
+                return false;
+            }
+        );*/
+    </script>
+    <script>
+        function myFunction() {
+                        var table,input,filter, tr, td, i, tbody;
+                        input = document.getElementById("my_input_date_min");
+                        filter = input.value.toUpperCase();
+                        table = document.getElementById("datable_leaves");
+                        tbody = table.getElementsByTagName("tbody");
+                        tr = table.getElementsByTagName("tr");
+                        for (i = 0; i < tr.length; i++) {
+                            td = tr[i].getElementsByTagName("td")[2];
+                            if (td) {
+                                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                                    tr[i].style.display = "";
+                                } else {
+                                    tr[i].style.display = "none";
+                                }
+                            }       
+                        }
+        }
+
+    </script>
+{% endblock calendre_leaves %}
+
+
+
+
+
+
+{% block js_files_superRH %}
+    <script src="{% static 'congemanagement/js/moment.js' %}"></script>
+    <script src="{% static 'congemanagement/js/pignose.calendar.js' %}"></script>
+    <script src="{% static 'congemanagement/js/datable.js' %}"></script>
+{% endblock js_files_superRH %}

@@ -1,0 +1,81 @@
+{% extends 'congemanagement/base_index_agent.html' %}
+{% load static %}
+
+{% block ajouter_demande %}
+    <div class="" id="container-add-leave-demande">
+                    <h1 class="h1-to-add-leave-demande">Formulaire d'ajouter une demande</h1>
+                    <form id="form-add-leave" class="form-horizontal container" method="post" action="{% url 'index_agent_add_leave' %}">
+                        {% csrf_token %}
+                        <!--     success  save     -->
+                        <div class="form-group my-label">
+                            <label class="control-label col-sm-2" for="{{ add_leave_form.cin.id_for_label }}">CIN:</label>
+                            <div class="col-sm-12">
+                                <!--<input type="text" class="form-control" data-validation="length alphanumeric" data-validation-length="min4" id="cin" placeholder="Entrer le CIN" required>-->
+                                {{ add_leave_form.cin }}
+                            </div>
+                            <p class="col-sm-2" id="cin-show-inf"></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="{{ add_leave_form.date_demande.id_for_label }}">Date demande:</label>
+                            <div class="col-sm-12">
+                                <!--<input type="date" class="form-control" data-validation="date" data-validation-format="yyyy-mm-dd" id="date-demande" placeholder="yyyy-mm-dd" required />-->
+                                {{ add_leave_form.date_demande }}
+                            </div>
+                            <p class="col-sm-2" id="date-demande-show-inf"></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="{{ add_leave_form.date_debut_conge.id_for_label }}">Date de debut:</label>
+                            <div class="col-sm-12">
+                                <!--<input type="date" class="form-control" data-validation="date" data-validation-format="yyyy-mm-dd" id="date-sortie" placeholder="yyyy-mm-dd" required />-->
+
+                                {{ add_leave_form.date_debut_conge }}
+                            </div>
+                            <p class="col-sm-2" id="date-sortie-show-inf"></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="{{ add_leave_form.date_fin_conge.id_for_label }}">Date de fin:</label>
+                            <div class="col-sm-12">
+                                <!--<input type="date" class="form-control" data-validation="date" data-validation-format="yyyy-mm-dd" id="date-entre" placeholder="yyyy-mm-dd" required />-->
+                                {{ add_leave_form.date_fin_conge }}
+                            </div>
+                            <p class="col-sm-2" id="date-entre-show-inf"></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="{{ add_leave_form.nbr_jour.id_for_label }}">Nombre de jour:</label>
+                            <div class="col-sm-12">
+                                <!--<input type="number" class="form-control" id="nbr-jour" placeholder="Entrer le nombre de jours planifiees" />-->
+                                {{ add_leave_form.nbr_jour }}
+                            </div>
+                            <p class="col-sm-2" id="nbr-jour-show-inf"></p>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-info">Ajouter</button>
+                                <a href="{% url 'index_agent_historique' %}"><button type="button" id="btn-reteur-historique-page" class="btn reteur-btn">Reteur</button></a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <script>
+                    $('#cin').blur(function(){
+                        var cin=$(this).val();
+                        
+                        $.ajax({
+                        url: '{% url "check_cin" %}',
+                        data: {
+                            'cin': cin
+                        },
+                        dataType: 'json',
+                            success: function (data) {
+                                if (!data.is_taken) {
+                                    swal(
+                                        'Stop....!',
+                                        'Employe not exist !',
+                                        'info'
+                                    );
+                                }
+                            }
+                        });
+                    });
+                </script>
+{% endblock ajouter_demande %}

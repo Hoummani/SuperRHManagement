@@ -1,0 +1,203 @@
+{% extends 'congemanagement/base_index_superRH.html' %}
+{% load static %}
+
+{% block employes_historique %}
+    
+        <div id="employes-historique">
+            <h1>Listes des employes</h1>
+            <div class="container">
+                <input type="text" id="myInput" onkeyup="myFunction()" class="form-control container" placeholder="Search..." />
+                
+            </div>
+            <div class="container">
+                <table id="employes_table" class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>CIN</th>
+                            <th>Nom et Prenom</th>
+                            <th>Tel</th>
+                            <th>Service</th>
+                            <th>Solde conge</th>
+                            <th>Options</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            {% for emp in employes %}
+                                <tr>
+                                    <td>{{ emp.cin }}</td>
+                                    <td>{{ emp.nom }} {{ emp.prenom }}</td>
+                                    <td>{{ emp.tel }}</td>
+                                    <td>{{ emp.service }}</td>
+                                    <td>{{ emp.solde_conge }}</td>
+                                    <td><span class="edit_employe"><img src="{% static 'congemanagement/css/images/icons/pen point tip.1.svg' %}"/></span><span  class="supp_employe"><img src="{% static 'congemanagement/css/images/icons/trash can.1.svg' %}"/></span></td>
+                                </tr>
+                            {% endfor %}
+                            <tr>
+                                <td>#</td>
+                                <td>---</td>
+                                <td>---</td>
+                                <td>---</td>
+                                <td>---</td>
+                                <td><a href="{% url 'index_superRH_add_employes' %}" class="add_disable_day">&#43;</span></td>
+                            </tr>     
+                    </tbody>
+                </table>
+                <script>
+                    function myFunction() {
+                        var input, filter, table, tr, td, i, tbody;
+                        input = document.getElementById("myInput");
+                        filter = input.value.toUpperCase();
+                        table = document.getElementById("employes_table");
+                        tbody = table.getElementsByTagName("tbody");
+                        tr = table.getElementsByTagName("tr");
+                        for (i = 0; i < tr.length; i++) {
+                            td = tr[i].getElementsByTagName("td")[1];
+                            if (td) {
+                                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                                tr[i].style.display = "";
+                                } else {
+                                    tr[i].style.display = "none";
+                                }
+                            }       
+                        }
+                    }
+                </script>
+                
+            </div>
+            <div id="" class="icon_to_add_employe"></div>
+            <script>
+                
+                $(document).ready(function(){
+                    $('.supp_employe').click(function(){
+                        var $current_cin=$(this).parent().prev().prev().prev().prev().prev().text();
+                        //swalDelete($current_cin);
+                        swal({
+                            title: 'Are you sure?',
+                            text: "It will be deleted permanently!",
+                            type: 'warning',
+                            showCancelButton: true,
+                            showCloseButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes, delete it!',
+                            showLoaderOnConfirm: true,
+                            backdrop:'rgba(0,0,123,0.4)',
+                            
+                            preConfirm: function() {
+                                return new Promise(function(resolve) {
+                                    $.ajax({
+                                        url: '{% url "delete_employe" %}',
+                                        data: {
+                                            'cin': $current_cin
+                                        },
+                                        dataType: 'json',
+                                        success: function (data) {
+                                            if (!data.is_deleted) {
+                                                swal(
+                                                    'Deleted !',
+                                                    'Your data is deleted !',
+                                                    'success'
+                                                )
+                                            }
+                                            else{
+                                                swal(
+                                                    'Error!',
+                                                    'Your data is not deleted!',
+                                                    'error'
+                                                )
+                                            }
+                                        }
+                                    });
+                                });
+                            },
+                            allowOutsideClick: false
+                        });
+                    });
+                });
+                
+            </script>
+            <!--
+            <div class="container item-operation-with-demande">
+                <div class="operation-with-demande ">
+                    <a href="{% url 'index_superRH_add_employes' %}" class="container-button-add-demande"><button class="button-add-demande" id="btn-ajouter-employe">Ajouter employe </button></a>
+                                    
+                    <form id="edit_employes-form" method="GET" action="">
+                        {% csrf_token %}
+                        <input type="text" name="selected_cin_employe" id="selected_cin_employe" placeholder="CIN " data-validation="length alphanumeric" data-validation-length="min4" required/>
+                       
+                        <input type="submit" id="icon-ed-current-employe" value="OK"/>
+                       
+                    </form>
+                </div>
+            </div>-->
+        </div>
+    <div id="edit_employe" class="">
+        <h1>Modifier un employe</h1>
+        <form id="form-edit-employe" class="form-horizontal container" method="post" action="{% url 'index_superRH_hist_employes' %}">
+            {% csrf_token %}
+            <!--     success  save     -->
+            <div class="form-group my-label">
+                <label class="control-label col-sm-2" for="{{ form.cin_edi.id_for_label }}">CIN:</label>
+                <div class="col-sm-12">
+                    <!--<input type="text" class="form-control" data-validation="length alphanumeric" data-validation-length="min4" id="cin" value="{{ cin }}" placeholder="CIN" required>-->
+                    {{ form.cin_edit }}
+
+                </div>
+                <p class="col-sm-2" class="show-inf-error" id="cin_edit-show-inf">{{ form.cin_edit.errors }}</p>
+            </div>
+            <div class="form-group my-label">
+                <label class="control-label col-sm-2" for="{{ form.nom_edit.id_for_label }}">Nom:</label>
+                <div class="col-sm-12">
+                    <!--<input type="text" class="form-control" data-validation="length alphanumeric" data-validation-length="min4" id="cin" placeholder="Entrer le CIN" required>-->
+                    {{ form.nom_edit }}
+
+                </div>
+                <p class="col-sm-2" class="show-inf-error" id="nom-show-inf">{{ form.nom_edit.errors }}</p>
+            </div>
+            <div class="form-group my-label">
+                <label class="control-label col-sm-2" for="{{ form.prenom_edit.id_for_label }}">Prenom:</label>
+                <div class="col-sm-12">
+                    <!--<input type="text" class="form-control" data-validation="length alphanumeric" data-validation-length="min4" id="cin" placeholder="Entrer le CIN" required>-->
+                    {{ form.prenom_edit }}
+
+                </div>
+                <p class="col-sm-2" class="show-inf-error" id="prenom-show-inf">{{ form.prenom_edit.errors }}</p>
+            </div>
+            <div class="form-group my-label">
+                <label class="control-label col-sm-2" for="{{ form.email_edit.id_for_label }}">Email:</label>
+                <div class="col-sm-12">
+                    <!--<input type="text" class="form-control" data-validation="length alphanumeric" data-validation-length="min4" id="cin" placeholder="Entrer le CIN" required>-->
+                    {{ form.email_edit }}
+
+                </div>
+                <p class="col-sm-2" class="show-inf-error" id="email-show-inf">{{ form.email_edit.errors }}</p>
+            </div>
+            <div class="form-group my-label">
+                <label class="control-label col-sm-2" for="{{ form.tel_edit.id_for_label }}">Tel:</label>
+                <div class="col-sm-12">
+                    <!--<input type="text" class="form-control" data-validation="length alphanumeric" data-validation-length="min4" id="cin" placeholder="Entrer le CIN" required>-->
+                    {{ form.tel_edit }}
+
+                </div>
+                <p class="col-sm-2" class="show-inf-error" id="tel-show-inf">{{ form.tel_edit.errors }}</p>
+            </div>
+            <div class="form-group my-label">
+                <label class="control-label col-sm-2" for="{{ form.service_edit.id_for_label }}">Service:</label>
+                <div class="col-sm-12">
+                    <!--<input type="text" class="form-control" data-validation="length alphanumeric" data-validation-length="min4" id="cin" placeholder="Entrer le CIN" required>-->
+                    {{ form.service_edit }}
+
+                </div>
+                <p class="col-sm-2" class="show-inf-error" id="service-show-inf">{{ form.service_edit.errors }}</p>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-12">
+                    <button type="submit" class="btn btn-info">Modifier</button>
+                    <a href="{% url 'index_superRH_hist_employes' %}"><button type="button" id="btn-reteur-historique-page" class="btn reteur-btn">Reteur</button></a>
+                </div>
+            </div>
+
+        </form>
+    </div>
+    
+{% endblock employes_historique %}

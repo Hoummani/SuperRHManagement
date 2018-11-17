@@ -1,0 +1,109 @@
+{% load static %}
+<html class="no-js">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>marsaRH</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="{% static 'congemanagement/css/images/index' %}"/>
+    <!--<link rel="stylesheet" type="text/css" media="screen" href="{% static 'congemanagement/css/roboto.css' %}" />-->
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'congemanagement/css/sweetalert2.min.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'congemanagement/css/index_agent_style.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'congemanagement/css/bootstrap.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'congemanagement/css/sweetalert2.min.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'congemanagement/css/jquery.dynatable.css' %}" />
+    <!-- For calendar        -->
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'congemanagement/css/pignose.calendar.css' %}" />
+
+    <!-- end for calendar   -->
+    <script src="{% static 'congemanagement/js/jquery-3.2.1.js' %}"></script>
+    <script src="{% static 'congemanagement/js/jquery.dynatable.js' %}"></script>
+    <script src="{% static 'congemanagement/js/sweetalert2.min.js' %}"></script>
+    <!--<link rel="stylesheet" type="text/css" media="screen" href="{% static 'congemanagement/css/demo.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'congemanagement/css/component.css' %}" />-->
+    <script src="{% static 'congemanagement/js/bootstrap.js' %}"></script>
+</head>
+<body>
+    <div class="show-flash-messages">
+        {% if messages %}
+        <ul class="messages">
+            {% for msg in messages %}       
+                <li>
+                    <div class="alert alert-{{msg.level_tag}}" id="alert-{{msg.level_tag}}" role="alert">
+                    {{msg.message}}
+                    <span class="x">X</span></div>
+                </li>
+            {% endfor %}
+            <!--<li><div class="alert alert-success" role="alert">Email sent successfully.</div></li>
+            <li><div class="alert alert-info" role="alert">All items on this page have free shipping.</div></li>
+            <li><div class="alert alert-warning" role="alert">You will need to change your password in one week.</div></li>
+            <li><div class="alert alert-error" id="show-error-messages" role="alert">We could not process your request at this time.</div></li>-->
+        </ul>
+        {% endif %}
+    </div>
+    <div id="container_global_website">
+        <header id="header-page">
+            <div class="menu-header">
+                <img src="{% static 'congemanagement/css/images/menu-icon.png' %}"/>
+            </div>
+            <div class="logo-marsa"><img src="{% static 'congemanagement/css/images/Marsa-Maroc.png' %}"/></div>
+            <div class="user-account">
+                <div class="img-user">
+                    <!--<img src="{% static 'congemanagement/css/images/icons8-male-user-32.png' %}"/>-->
+                    <!--<div class="espace_user_image"></div>
+                    <span class="connected"></span><span>Agent</span>-->
+                    <div class="about"><a  href="#">Aide</a></div>
+                </div>
+            </div>
+            <div class="logout">
+                <!--<button>Deconnexion</button>-->
+                <div class="about"><a href="#" >Tour d'application</a></div>
+            </div>
+        </header>
+        <div id="section_page">
+            <nav id="navbar">
+                <div class="item-account-sidebar">
+                    <div class="item-user-img"><span class="user-existe">@</span></div>
+                    <div id="title-username">Agent Standard</div>
+                </div>
+                <div class="navigation-options">
+                    <a href="{% url 'my_profile' %}" class="list-nav-bar-a"><li class="list-nav-bar"><span class="fonticon">&#85;</span>Profile</li></a>
+                    <a href="{% url 'calendre_leave' %}" class="list-nav-bar-a"><li class="list-nav-bar"><span class="fonticon">&#68;</span>Calendrier</li></a>
+                    <a href="{% url 'index_agent_historique' %}" class="list-nav-bar-a"><li class="list-nav-bar"><span class="fonticon">&#80;</span>Historique<span class="btn-notification-historique">3</span></li></a>
+                    <a href="#" class="list-nav-bar-a"><li class="list-nav-bar"><span class="fonticon">&#44;</span>Notification</li></a>
+                    <a href="#" class="list-nav-bar-a"><li class="list-nav-bar"><span class="fonticon">&#83;</span>Configuration</li></a>
+                    <a href="{% url 'logout' %}"><button class="logou-button">Deconnexion</button></a>
+                </div>
+                <!--<button class="logou-button"><a href="{% url 'logout' %}">Deconnexion</a></button>-->
+            </nav>
+            <div id="content-page">
+                <!-- Historique bloc -->
+                {% block conge_application_historique %}
+                {% endblock conge_application_historique %}
+                
+                <!--Ajouter une demande-->
+                {% block ajouter_demande %}
+                {% endblock ajouter_demande %}
+                
+                <!--Editer une demande !-->
+                {% block edit_demande %}
+                {% endblock edit_demande %}
+                <!-- Profile bloc -->
+                {% block user_profile %}
+                {% endblock user_profile %}
+                {% block changer_password %}
+                {% endblock changer_password %}
+                <!-- Calendre conge -->
+                {% block calendre_leaves %}
+                {% endblock calendre_leaves %}
+                
+            </div>
+        </div>
+    </div>
+
+<script src="{% static 'congemanagement/js/index_agent_script.js' %}"></script>
+<script src="{% static 'congemanagement/js/form-validator.js' %}"></script>
+<script src="{% static 'congemanagement/js/moment.js' %}"></script>
+<script src="{% static 'congemanagement/js/pignose.calendar.js' %}"></script>
+</body>
+</html>

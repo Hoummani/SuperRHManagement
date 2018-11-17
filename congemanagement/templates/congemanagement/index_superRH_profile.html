@@ -1,0 +1,73 @@
+{% extends 'congemanagement/base_index_superRH.html' %}
+{% load static %}
+
+{% block user_profile %}
+    <div class="" id="container_user_profile">
+        <h1>Mon Profile </h1>
+
+        <form id="formulaire_update_profile" class="container" action="{% url 'profileRH' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group my-label">
+                <label class="control-label col-sm-2"  for="ed-cin">Username:</label>
+                <div class="col-sm-12">
+                    <!--<input type="text" class="form-control" data-validation="length alphanumeric" data-validation-length="min4" id="username_profile" placeholder="Username" required/>-->
+                    {{ user_profile_form.username }}    
+                </div>
+                <p class="col-sm-2" id="ed-cin-show-inf"></p>
+            </div>
+            <div class="form-group my-label">
+                <label class="control-label col-sm-2"  for="nom_profile">Nom:</label>
+                 
+                <div class="col-sm-12">
+                    <!--<input type="text" class="form-control" data-validation="length alphanumeric" data-validation-length="min4" id="nom_profile" placeholder="Nom" required/> -->
+                    {{ user_profile_form.last_name }}   
+                </div>
+                <p class="col-sm-2" id="ed-cin-show-inf"></p>
+            </div>
+            <div class="form-group my-label">
+                <label class="control-label col-sm-2"  for="prenom_profile">Prenom:</label>
+                <div class="col-sm-12">
+                   <!--<input type="text" class="form-control" data-validation="length alphanumeric" data-validation-length="min4" id="prenom_profile" placeholder="Prenom" required/>-->
+                   {{ user_profile_form.first_name }}    
+                </div>
+                <p class="col-sm-2" id="ed-cin-show-inf"></p>
+            </div>
+            <div class="form-group my-label">
+                <label class="control-label col-sm-2"  for="email_profile">Adresse email:</label>
+                <div class="col-sm-12">
+                    <!--<input type="email" class="form-control" data-validation="email" data-validation-length="min4" id="email_profile" placeholder="Email" required/> -->
+                    {{ user_profile_form.email }}    
+                </div>
+                <p class="col-sm-2" id="ed-cin-show-inf"></p>
+            </div>
+            <!--
+            <div class="form-group my-label">
+                <label class="control-label col-sm-2"  for="password_profile">Mot de passe:</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" data-validation="length password" data-validation-length="min8" id="password_profile" placeholder="Mot de passe" required/> 
+                    {{ user_profile_form.password }}   
+                </div>
+                <p class="col-sm-2" id="ed-cin-show-inf"></p>
+            </div>
+            <div class="form-group my-label">
+                <label class="control-label col-sm-5"  for="confirm_pass_profile">Confirmer mot de passe:</label>
+                <div class="col-sm-10">
+                    <input type="email" class="form-control" data-validation="confir-password" data-validation-length="min8" id="confirm_pass_profile" placeholder="Confirmer le mot de pass" required/> 
+                    {{ user_profile_form.confirmPassword }}   
+                </div>
+                <p class="col-sm-2" id="ed-cin-show-inf"></p>
+            </div>
+            -->
+            <div class="form-group">
+                <a href="{% url 'changer_password_superRH' %}" class="col-sm-offset-2 col-sm-10">Changer le Mot de Passe </a>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-12">
+                    <input type="submit" class="btn btn-info" id="submited-form-profile" value="Envoyer"/>
+                    <a href="{% url 'index_superRH_historique_conges' %}"><input type="button" class="btn reteur-btn" id="retour-from-profile-to-agent_histo" value="Reteur"/></a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+{% endblock user_profile %}

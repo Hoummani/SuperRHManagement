@@ -1,0 +1,196 @@
+{% extends 'congemanagement/base_index_superRH.html' %}
+{% load static %}
+{% block conge_app_historique %}
+    <div id="conge-application-historique">
+            <h1>Historique de conge</h1>
+            <div  class="container">
+                
+                {% csrf_token %}
+                <input type="text" id="inputSerachConge" onkeyup="myFunction()" class="form-control" placeholder="Search..." />
+            </div>
+            
+            <div class="container">
+                <table id="conge_tableRH" class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>CIN</th>
+                            <th>Nom et Prenom</th>
+                            <th>Date demande</th>
+                            <th>De</th>
+                            <th>Au</th>
+                            <th>N-jour</th>
+                            <th>Decision</th>
+                            <th>Options</th>
+                        </tr>
+                    </thead>
+                    <tbody>   
+                        {% for app in apps_conge %}
+                                <tr>
+                                    <td>{{ app.conge_app_application_FK.id }}</td>
+                                    <td>{{ app.employe_application_FK.cin }}</td>
+                                    <td>{{ app.employe_application_FK.nom }} {{ app.employe_application_FK.prenom }}</td>
+                                    <td>{{ app.conge_app_application_FK.date_demande }}</td>
+                                    <td>{{ app.conge_app_application_FK.date_debut_conge }}</td>
+                                    <td>{{ app.conge_app_application_FK.date_fin_conge }}</td>
+                                    <td>{{ app.conge_app_application_FK.nbr_jour }}</td>
+                                    <td>{{ app.conge_app_application_FK.etat_conge }}</td>
+                                    <td><span title="Accepter la demande" class="accepter_conge">&#47;</span><span title="Refuer la demande" class="refuser_conge">&#215;</span><a class="pdf_generation" href="#">PDF</a></td>
+                                </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <script>
+                    function myFunction() {
+                        var input, filter, table, tr, td, i, tbody;
+                        input = document.getElementById("inputSerachConge");
+                        filter = input.value.toUpperCase();
+                        table = document.getElementById("conge_tableRH");
+                        tbody = table.getElementsByTagName("tbody");
+                        tr = table.getElementsByTagName("tr");
+                        for (i = 0; i < tr.length; i++) {
+                            td = tr[i].getElementsByTagName("td")[2];
+                            if (td) {
+                                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                                tr[i].style.display = "";
+                                } else {
+                                    tr[i].style.display = "none";
+                                }
+                            }       
+                        }
+                    }
+                    $(document).ready(function(){
+                        $('.accepter_conge').click(function(){
+                            var $id=$(this).parent().prev().prev().prev().prev().prev().prev().prev().prev().text();
+                            var $current_cin=$(this).parent().prev().prev().prev().prev().prev().prev().prev().text();
+                            var $nbr_jour=$(this).parent().prev().prev().text();
+                            var $decision=$(this).parent().prev().text();
+                            swal({
+                                title: 'Are you sure?',
+                                text: "It will be done permanently!",
+                                type: 'warning',
+                                showCancelButton: true,
+                                showCloseButton: true,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Yes, do it!',
+                                showLoaderOnConfirm: true,
+                                backdrop:'rgba(0,0,123,0.4)',
+                            
+                                preConfirm: function() {
+                                    return new Promise(function(resolve) {
+                                    //here
+                                    $.ajax({
+                                        url: '{% url "accepte_conge" %}',
+                                        data: {
+                                            'id': $id,
+                                            'cin':$current_cin,
+                                            'nbr_jour':$nbr_jour,
+                                            'decision':$decision,
+                                            'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val()
+                                        },
+                                        dataType: 'json',
+                                        success: function (data) {
+                                            if (data.message_success) {
+                                                swal('Good job !',
+                                                        data.message_success,
+                                                        'success'
+                                                );   
+                                            
+                                            }
+                                            if (data.message_warning) {
+                                                swal('Attention !',
+                                                        data.message_warning,
+                                                        'warning'
+                                                );   
+                                            
+                                            }
+                                            else{
+                                                
+                                            }
+                                        }
+                                    });
+                                });
+                                },
+                                allowOutsideClick: false
+                            });
+                        });
+                        //===========================================
+                        //      Refuser conge
+                        //==========================================
+                        $('.refuser_conge').click(function(){
+                            var $id=$(this).parent().prev().prev().prev().prev().prev().prev().prev().prev().text();
+                            var $current_cin=$(this).parent().prev().prev().prev().prev().prev().prev().prev().text();
+                            var $nbr_jour=$(this).parent().prev().prev().text();
+                            var $decision=$(this).parent().prev().text(); 
+                            swal({
+                                title: 'Are you sure?',
+                                text: "It will be done permanently!",
+                                type: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Yes, do it!',
+                                showLoaderOnConfirm: true,
+                                showCloseButton: true,
+                                backdrop:'rgba(0,0,123,0.4)',
+                            
+                                preConfirm: function() {
+                                    return new Promise(function(resolve) {
+                                    //here
+                                    $.ajax({
+                                        url: '{% url "refuse_conge" %}',
+                                        data: {
+                                            'id': $id,
+                                            'cin':$current_cin,
+                                            'nbr_jour':$nbr_jour,
+                                            'decision':$decision,
+                                            'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val()
+                                        },
+                                        dataType: 'json',
+                                        success: function (data) {
+                                            if (data.message_success) {
+                                                swal('Good job !',
+                                                        data.message_success,
+                                                        'success'
+                                                );   
+                                            
+                                            }
+                                            if (data.message_warning) {
+                                                swal('Attention !',
+                                                        data.message_warning,
+                                                        'warning'
+                                                );   
+                                            
+                                            }
+                                            else{
+                                                
+                                            }
+                                        }
+                                    });
+                                });
+                                },
+                                allowOutsideClick: false
+                            });
+                        });
+                    });
+                </script>
+                
+            </div>
+            <!--
+            <div class="container item-operation-with-demande">
+                <div class="operation-with-demande container">
+                    <a href="#" class="container-button-add-demande"><button class="button-add-demande" id="btn-ajouter-demande">Ajouter demande </button></a>
+                   
+                    <form id="suppression-conge-form" method="GET" action="">
+                        {% csrf_token %}
+                        <input type="text" name="selected_cin_demande" id="selected_cin_demande" placeholder="Selectionner l'element a editer " data-validation="length alphanumeric" data-validation-length="min4" required/>
+                       
+                        <input type="submit" id="icon-ed-current-leave" value=""/>
+                        <a href="#" value="" id="submit-supp-current-leave">Supprimer</a>
+                       
+                    </form>
+            </div>-->
+        </div>
+    </div>
+{% endblock conge_app_historique %}

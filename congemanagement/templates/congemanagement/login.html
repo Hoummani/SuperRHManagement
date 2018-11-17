@@ -1,0 +1,75 @@
+{% load static %}
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>marsaRH</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="{% static 'congemanagement/css/images/index' %}"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'congemanagement/css/loginstyle.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'congemanagement/css/bootstrap.css' %}" />
+</head>
+<body class="styliser_body">
+    <div class="show-flash-messages">
+        {% if messages %}
+        <ul class="messages">
+            {% for msg in messages %}       
+                <li>
+                    <div class="alert alert-{{msg.level_tag}}" id="alert-{{msg.level_tag}}" role="alert">
+                    {{msg.message}}
+                    <span class="x">X</span></div>
+                </li>
+            {% endfor %}
+            <!--<li><div class="alert alert-success" role="alert">Email sent successfully.</div></li>
+            <li><div class="alert alert-info" role="alert">All items on this page have free shipping.</div></li>
+            <li><div class="alert alert-warning" role="alert">You will need to change your password in one week.</div></li>
+            <li><div class="alert alert-error" id="show-error-messages" role="alert">We could not process your request at this time.</div></li>-->
+        </ul>
+        {% endif %}
+    </div>
+    <div class="container">
+        <!--
+        <div class="messages_auth">
+            Something worng !
+        </div>-->
+       <section id="content">
+           <form action="{% url 'loginpage' %}" method="POST">
+                 <!--<h1>Login Form</h1>-->
+                 {% csrf_token %}
+                <div class="container_logo_marsa">
+                    <img src="{% static 'congemanagement/css/images/Marsa-Maroc.png' %}"/>
+                </div>
+                <div>
+                    {% if form.errors %}
+                    <div class="show_information_error">Erreur !</div>
+                    {% endif %}
+                </div>
+    			<div>
+                    <!--<p class="placeholder_forget">Username:</p>-->
+                    {{ form.username}}
+    				<!--<input type="text" placeholder="Username" id="username" name="username" required/>-->
+    			</div>
+    			<div>
+                    <!--<p class="placeholder_forget">Password:</p>-->
+                    {{ form.password}}
+    				<!--<input type="password" placeholder="Password" id="password" name="password" required/>-->
+    			</div>
+    			<div>
+    				<input type="submit" value="Connexion" />
+    				<a href="{% url 'reset_password_profile' %}">Mot de passe oublie?</a>
+    				<a href="#">Enregister</a>
+    	         </div>
+            </form><!-- form -->
+	      <div class="button" id="show_information">
+              {{ form.errors }}
+
+          </div><!-- button -->
+	   </section><!-- content -->
+   </div><!-- container -->
+<script src="{% static 'congemanagement/js/jquery-3.2.1.js' %}"></script>
+<script src="{% static 'congemanagement/js/loginscript.js' %}"></script>
+<script>
+    $('.alert').fadeIn(3200).delay(2800).fadeOut(1800);
+</script>
+</body>
+</html>
